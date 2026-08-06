@@ -19,6 +19,7 @@ export const ParkForm: React.FC<ParkFormProps> = ({
     const [formData, setFormData] = useState<Partial<Park>>({
         name: '',
         county: '',
+        email: '',
         minLatitude: '',
         maxLatitude: '',
         minLongitude: '',
@@ -70,9 +71,15 @@ export const ParkForm: React.FC<ParkFormProps> = ({
                 throw new Error('Longitude must be between -180 and 180');
             }
 
+            const email = formData.email?.trim() ?? '';
+            if (email !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                throw new Error('Please enter a valid email address');
+            }
+
             //  We would later upload the image to a server here and get back a URL to store with the park
             const cleanedData = {
                 ...formData,
+                email: email === '' ? null : email,
                 minLatitude: Number(formData.minLatitude),
                 maxLatitude: Number(formData.maxLatitude),
                 minLongitude: Number(formData.minLongitude),
@@ -119,6 +126,18 @@ export const ParkForm: React.FC<ParkFormProps> = ({
                         value={formData.county}
                         onChange={handleChange}
                         required
+                        fullWidth
+                    />
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 mb-6">
+                    <Input
+                        label="Contact Email"
+                        name="email"
+                        type="email"
+                        value={formData.email ?? ''}
+                        onChange={handleChange}
+                        placeholder="Notified when a new issue is reported (optional)"
                         fullWidth
                     />
                 </div>

@@ -41,8 +41,9 @@ describe('IssueService', () => {
         issueImage: null,
         park: { 
 			parkId: 1, 
-			name: 'Test Park', 
-			county: 'Allegheny', 
+			name: 'Test Park',
+			county: 'Allegheny',
+			email: null,
 			minLatitude: 40,
 			minLongitude: 40,
 			maxLatitude: 80,
@@ -89,6 +90,7 @@ describe('IssueService', () => {
 
         issueNotificationServiceMock = {
             sendIssueCreatedConfirmation: jest.fn(),
+            sendNewIssueParkNotification: jest.fn(),
             sendIssueInProgressUpdate: jest.fn(),
             sendIssueResolvedUpdate: jest.fn(),
             verifyUnsubscribeToken: jest.fn(),
@@ -304,6 +306,7 @@ describe('IssueService', () => {
                 parkId: 999,
                 name: 'Other Park',
                 county: 'Allegheny',
+                email: null,
                 minLatitude: 40,
                 minLongitude: 40,
                 maxLatitude: 80,

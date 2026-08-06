@@ -104,6 +104,22 @@ export class IssueNotificationService {
         });
     }
 
+    // Notify the park's contact address (if configured) that a new issue was
+    // reported. Independent of the reporter's notification preference.
+    public async sendNewIssueParkNotification(issue: IssueWithRelations) {
+        const parkEmail = issue.park?.email;
+        if (!parkEmail) {
+            return;
+        }
+
+        await this.emailClient.send({
+            to: parkEmail,
+            subject: `New trail issue reported at ${issue.park?.name ?? 'a park'}`,
+            text: this.buildParkNotificationText(issue),
+            html: this.buildParkNotificationHtml(issue),
+        });
+    }
+
     public async sendIssueInProgressUpdate(issue: IssueWithRelations) {
         if (!this.shouldNotify(issue)) {
             return;
@@ -186,6 +202,24 @@ export class IssueNotificationService {
             `<p><a href="${this.escapeHtml(this.buildIssueCardUrl(issue.issueId))}">Track or edit your report</a></p>`,
             `<p>If you no longer want updates for this issue, <a href="${this.escapeHtml(this.buildUnsubscribeUrl(issue.issueId, issue.reporterEmail))}">unsubscribe here</a>.</p>`,
             '<p>You will receive additional updates as the issue status changes.</p>'
+        ].join('');
+    }
+
+    private buildParkNotificationText(issue: IssueWithRelations) {
+        return [
+            'A new trail issue has been reported.',
+            '',
+            this.buildIssueSummary(issue),
+            '',
+            `View the issue here: ${this.buildIssueCardUrl(issue.issueId)}`
+        ].join('\n');
+    }
+
+    private buildParkNotificationHtml(issue: IssueWithRelations) {
+        return [
+            '<p>A new trail issue has been reported.</p>',
+            this.buildIssueSummaryHtml(issue),
+            `<p><a href="${this.escapeHtml(this.buildIssueCardUrl(issue.issueId))}">View the issue</a></p>`
         ].join('');
     }
 

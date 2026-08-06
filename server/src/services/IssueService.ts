@@ -150,9 +150,9 @@ export class IssueService {
             throw new Error('Failed to create issue');
         }
 
-        await this.issueNotificationService.sendIssueCreatedConfirmation(
-            this.toNotificationIssue(issue)
-        );
+        const notificationIssue = this.toNotificationIssue(issue);
+        await this.issueNotificationService.sendIssueCreatedConfirmation(notificationIssue);
+        await this.issueNotificationService.sendNewIssueParkNotification(notificationIssue);
 
         const issueResponse = await this.toIssueResponse(issue, imageMetadata);
 
