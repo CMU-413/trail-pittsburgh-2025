@@ -150,7 +150,7 @@ export const ParkDetailPage: React.FC = () => {
             </div>
             <PageHeader
                 title={park.name}
-                subtitle={`${park.county} County`}
+                subtitle={`${park.county} County${park.email ? ` · ${park.email}` : ''}`}
                 action={
                     <div className="flex space-x-3">
                         <Link to={`/parks/${park.parkId}/edit`}>

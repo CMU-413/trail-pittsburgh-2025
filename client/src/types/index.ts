@@ -8,6 +8,7 @@ export type Park = {
     parkId: number;
     name: string;
     county: string;
+    email?: string | null;
 	minLatitude: number | '';
 	minLongitude: number | '';
 	maxLatitude: number | '';

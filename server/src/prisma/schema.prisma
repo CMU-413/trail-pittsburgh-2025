@@ -36,6 +36,7 @@ model Park {
   parkId       Int      @id @default(autoincrement()) @map("park_id")
   name         String   @db.VarChar(50)
   county       String   @db.VarChar(50)
+  email        String?  @db.VarChar(255)
   minLatitude  Float
   minLongitude Float
   maxLatitude  Float

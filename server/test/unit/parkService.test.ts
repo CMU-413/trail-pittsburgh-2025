@@ -11,6 +11,7 @@ describe('ParkService', () => {
         parkId: 1,
         name: 'Test Park',
         county: 'Test County',
+        email: null,
 		minLatitude: 40,
 		minLongitude: 40,
 		maxLatitude: 80,

@@ -47,7 +47,7 @@ export class ParkController {
 
     public async createPark(req: express.Request, res: express.Response) {
         try {
-            const { name, county, minLatitude, minLongitude,
+            const { name, county, email, minLatitude, minLongitude,
 				 maxLatitude, maxLongitude, isActive } = req.body;
 
             // Validate required fields
@@ -64,6 +64,7 @@ export class ParkController {
             const parkData = {
                 name,
                 county,
+                email,
                 minLatitude,
                 minLongitude,
                 maxLatitude,
@@ -84,12 +85,13 @@ export class ParkController {
         const parkId = Number(req.params.parkId);
 
         try {
-            const { name, county, minLatitude, minLongitude, 
+            const { name, county, email, minLatitude, minLongitude, 
                 maxLatitude, maxLongitude, isActive } = req.body;
 
             const updatedPark = await this.parkService.updatePark(parkId, {
                 name,
                 county,
+                email,
                 minLatitude,
                 minLongitude,
                 maxLatitude,
