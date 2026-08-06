@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { SESSION_DURATION_MS } from '@/constants/session';
 import { AuthService } from '@/services/AuthService';
 import { UserService } from '@/services/UserService';
 import { logger } from '@/utils/logger';
@@ -40,7 +41,7 @@ export class AuthController {
                 httpOnly: true,
                 secure: isProd,
                 sameSite: isProd ? 'none' : 'lax',
-                maxAge: 24 * 60 * 60 * 1000,
+                maxAge: SESSION_DURATION_MS,
                 path: '/',
             });
 

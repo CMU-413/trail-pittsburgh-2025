@@ -4,6 +4,7 @@ import React, {
 import { useNavigate } from 'react-router-dom';
 import { User } from '../types';
 import { UserRoleEnum } from '../types/index';
+import { SESSION_TIMEOUT_MS } from '../constants/config';
 
 interface AuthContextType {
   user: User | null;
@@ -97,14 +98,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    // setTimeout delays are capped at a signed 32-bit int (~24.8 days), so a
+    // longer inactivity window has to be scheduled in chunks against a deadline.
+    const MAX_TIMEOUT_MS = 2_147_483_647;
+
+    const scheduleLogout = (remainingMs: number) => {
+        const delay = Math.min(remainingMs, MAX_TIMEOUT_MS);
+        logoutTimer.current = window.setTimeout(() => {
+            const leftMs = remainingMs - delay;
+            if (leftMs > 0) {
+                scheduleLogout(leftMs);
+            } else {
+                logout();
+            }
+        }, delay);
+    };
+
     const resetTimer = () => {
         if (logoutTimer.current) {
             clearTimeout(logoutTimer.current);
         }
 
-        logoutTimer.current = window.setTimeout(() => {
-            logout();
-        }, 120 * 60 * 1000); // 120 minutes = 2 hrs
+        scheduleLogout(SESSION_TIMEOUT_MS);
     };
 
     const isAuthenticated = !!user;

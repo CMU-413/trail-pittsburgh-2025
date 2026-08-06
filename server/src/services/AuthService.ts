@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { UserService } from './UserService';
 
+import { SESSION_DURATION_SECONDS } from '@/constants/session';
 import { getGoogleUserData } from '@/lib/googleAuth';
 
 export class AuthService {
@@ -47,7 +48,7 @@ export class AuthService {
                 picture: user.profileImage
             },
             process.env.JWT_SECRET!,
-            { expiresIn: '24h' }
+            { expiresIn: SESSION_DURATION_SECONDS }
         );
 
         return { token, user };
