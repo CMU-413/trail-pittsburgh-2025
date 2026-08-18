@@ -210,15 +210,15 @@ export const Header: React.FC = () => {
             {/* Mobile menu */}
             {isMenuOpen && (
                 <div className="sm:hidden absolute w-full bg-white border-b border-gray-200 shadow-lg">
-                    <div className="pt-2 pb-3 space-y-1">
+                    <div className="pt-2 pb-0 space-y-1">
                         {navigation().map((item) => (
                             <Link
                                 key={item.name}
                                 to={item.href}
                                 className={`${item.current
                                     ? 'bg-orange-50 text-[#BD4602] border-l-4 border-[#BD4602]'
-                                    : 'text-gray-700 hover:bg-gray-50 hover:text-[#BD4602] border-l-4 border-transparent'
-                                } block pl-3 pr-4 py-2 text-base font-medium transition-colors duration-200`}
+                                    : 'text-gray-700 hover:bg-gray-50 hover:text-[#BD4602] hover:border-[#BD4602] border-l-4 border-transparent'
+                                } block pl-3 pr-4 py-4 m-0 text-base font-medium transition-colors duration-200`}
                                 aria-current={item.current ? 'page' : undefined}
                                 onClick={() => setIsMenuOpen(false)}
                             >
@@ -245,6 +245,7 @@ export const Header: React.FC = () => {
                                     <div className="text-sm font-medium text-gray-500 capitalize">{formatUserRole(userRole)}</div>
                                 </div>
                             </div>
+
                             <div className="mt-3 space-y-1">
                                 <Link
                                     to="/profile"
@@ -269,12 +270,14 @@ export const Header: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <button
-                            onClick={triggerAuth}
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#BD4602] hover:bg-[#a33e02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BD4602]"
-                        >
-                            Sign in
-                        </button>
+                        <div className="pt-4 pr-3 pb-3 pl-3 border-t border-gray-200">
+                            <button
+                                onClick={triggerAuth}
+                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#BD4602] hover:bg-[#a33e02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#BD4602]"
+                            >
+                                Sign in
+                            </button>
+                        </div>
                     )}
                 </div>
             )}
